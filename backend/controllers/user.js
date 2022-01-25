@@ -1,0 +1,95 @@
+const User = require('../models/user');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { switchErrToNum, throwErrWhenFail } = require('../helpers/errHelpers');
+
+
+module.exports.getCurrentUser = (req, res) => {
+  User.find({ _id: req.user._id })
+    .orFail(throwErrWhenFail)
+    .then(user => res.send({ data: user }))
+    .catch(err => next(err));
+};
+
+module.exports.login = (req, res) => {
+  let userId = "";
+  const { email, password } = req.body;
+  User.findOne({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new Error('Incorrect password or email'));
+      }
+      console.log('login');
+
+      userId = user._id;
+      console.log(user);
+      return bcrypt.compare(password, user.password);
+    })
+    .then((matched) => {
+      if (!matched) {
+        return Promise.reject(new Error('Incorrect password or email'));
+      }
+      const token = jwt.sign(
+        { _id: userId },
+        'some-secret-key',
+        { expiresIn: '7d' }
+      );
+      console.log(token);
+      res.send({ token });
+    })
+    .then(users => res.send({ data: users }))
+    .catch(err => res.status(401).send(err));
+};
+
+module.exports.getUsers = (req, res) => {
+  User.find({})
+    .then(users => res.send({ data: users }))
+    .catch(err => next(err));
+};
+
+module.exports.getUserById = (req, res) => {
+  User.find({ _id: req.params.id })
+    .orFail(throwErrWhenFail)
+    .then(user => res.send({ data: user }))
+    .catch(err => { res.send({ massege: 'cannot find' }); });
+};
+
+module.exports.createUser = (req, res) => {
+  const { name, about, avatar, password, email } = req.body;
+  bcrypt.hash(password, 10)
+    .then(hash => User.create({
+      name,
+      about,
+      avatar,
+      password: hash,
+      email
+    }))
+    .then(user => {
+      console.log("posted");
+      res.send({ message: 'Posted' });
+    })
+    .catch(err => next(err));
+};
+
+module.exports.updateProfile = (req, res) =>
+  User.findByIdAndUpdate(
+    req.user._id,
+    req.body,
+    { new: true, runValidators: true },
+  )
+    .orFail(throwErrWhenFail)
+    .then(user => {
+      res.send({ user: user });
+    })
+    .catch(err => next(err));
+
+module.exports.updateAvatar = (req, res) => User.findByIdAndUpdate(
+  req.user._id,
+  { avatar: req.body.avatar },
+  { new: true, runValidators: true },
+)
+  .orFail(throwErrWhenFail)
+  .then(user => {
+    res.send({ user: user });
+  })
+  .catch(err => next(err));
