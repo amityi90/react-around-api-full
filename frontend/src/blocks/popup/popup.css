@@ -1,0 +1,26 @@
+@import url(./__close-button/popup__close-button.css);
+@import url(./__heading/popup__heading.css);
+@import url(./__text-input/popup__text-input.css);
+@import url(./__save-button/popup__save-button.css);
+@import url(./__conainer/popup__conainer.css);
+@import url(./__text-input-error/popup__text-input-error.css);
+@import url(./__text-input/_type_error/popup__text-input_type_error.css);
+@import url(./__save-button/_inactive/popup__save-button_inactive.css);
+@import url(./__save-button/_content_delete/popup__save-button_content_delete.css);
+@import url(./popup__form/_content_delete/popup__form_content_delete.css);
+@import url(./popup__form/_content_change-profile-picture/popup__form_content_change-profile-picture.css);
+
+.popup {
+    background: rgba(0, 0, 0, .5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    visibility: visible;
+    opacity: 1;
+    transition: visibility .2s, opacity .2s linear;
+}

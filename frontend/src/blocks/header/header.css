@@ -1,0 +1,25 @@
+@import url(./__image/header__image.css);
+@import url(./__navigator/header__navigator.css);
+@import url(./__navigator-item/header__navigator-item.css);
+@import url(./__navigator-item/_style_dark/header__navigator-item_style_dark.css);
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 400px);
+    margin: 0 auto;
+    padding: 0;
+    border-bottom: 1px solid rgba(84, 84, 84, .7);
+}
+
+@media screen and (max-width: 900px) {
+    .header {
+        width: calc(100% - 100px);
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .header {
+        width: 100%;
+    }
+}

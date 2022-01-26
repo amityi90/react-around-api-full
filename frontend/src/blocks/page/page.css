@@ -1,0 +1,7 @@
+@import url(./__main/page__main.css);
+
+.page {
+    font-family: Inter, Fallback, sans-serif;
+    max-width: 1280px;
+    margin: 0 auto;
+}

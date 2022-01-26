@@ -1,0 +1,19 @@
+@import url(./__image/registration-info__image.css);
+@import url(./__image/_content_v/registration-info__image_content_v.css);
+@import url(./__image/_content_x/registration-info__image_content_x.css);
+@import url(./__title/regisreation-info__title.css);
+
+
+
+.registration-info {
+    position: relative;
+    margin: 0 auto;
+    background-color: white;
+    width: 430px;
+    height: 330px;
+    margin: 0 auto;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    padding: 60px 0;
+    box-sizing: border-box;
+}

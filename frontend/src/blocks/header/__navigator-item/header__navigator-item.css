@@ -1,0 +1,13 @@
+.header__navigator-item {
+    margin: 0;
+    color: white;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: right;
+    text-decoration: none;
+    min-width: 80px;
+}
+
+.header__navigator-item:hover {
+    color: #A9A9A9;
+}

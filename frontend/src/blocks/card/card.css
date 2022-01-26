@@ -1,0 +1,44 @@
+@import url(./__details/card__details.css);
+@import url(./__heart/card__heart.css);
+@import url(./__name/card__name.css);
+@import url(./__image/card__image.css);
+@import url(./__heart/_active/card__heart_active.css);
+@import url(./__delete/card__delete.css);
+@import url(./__image-container/card__image-container.css);
+@import url(./__like-number/card__like-number.css);
+
+.card {
+    position: relative;
+    background-color: white;
+    box-sizing: border-box;
+    border: 0;
+    width: calc((100% / 3) - 10px);
+    border-radius: 10px;
+    margin: 20px 15px 0 0;
+}
+
+.card:nth-child(3n) {
+    margin-right: 0;
+}
+
+@media screen and (max-width: 950px) {
+    .card {
+        width: calc((100% / 2) - 5px);
+        margin-right: 10px;
+    }
+
+    .card:nth-child(3n) {
+        margin-right: 10px;
+    }
+
+    .card:nth-child(2n) {
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .card {
+        width: 100%;
+        margin-right: 0;
+    }
+}

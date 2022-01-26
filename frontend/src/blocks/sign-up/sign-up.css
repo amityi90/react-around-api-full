@@ -1,0 +1,12 @@
+@import url(./__title/sign-up__title.css);
+@import url(./__input/sign-up__input.css);
+@import url(./__submit/sign-up__submit.css);
+@import url(./__login-link/sign-up__login-link.css);
+
+.sign-up {
+    display: flex;
+    flex-direction: column;
+    max-width: 358px;
+    margin: 60px auto 80px;
+    align-items: center;
+}

@@ -1,0 +1,7 @@
+.big-screen-image__image {
+    width: auto;
+    height: auto;
+    margin: 0;
+    max-width: 75vw;
+    max-height: 75vh;
+}

@@ -1,0 +1,26 @@
+.profile__edit-container {
+    position: absolute;
+    z-index: 2;
+    background-size: 26px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 127.5px;
+    height: 127.5px;
+    border-radius: 100%;
+    margin: 40px 0;
+    cursor: pointer;
+
+
+
+}
+
+.profile__edit-container:hover + .profile__avatar {
+    opacity: .2;
+
+}
+
+.profile__edit-container:hover {
+    background-image: url(../../../images/profile-edit.svg);
+
+}
+

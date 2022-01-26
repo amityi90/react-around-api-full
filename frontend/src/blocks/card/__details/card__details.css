@@ -1,0 +1,7 @@
+.card__details {
+    padding: 0 18px 0 21px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 0 0 10px 10px;
+}

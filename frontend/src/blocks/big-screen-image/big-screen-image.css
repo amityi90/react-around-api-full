@@ -1,0 +1,7 @@
+@import url(./__image/big-screen-image__image.css);
+@import url(./__name/big-screen-image__name.css);
+
+.big-screen-image {
+    position: relative;
+    margin: 0 auto;
+}

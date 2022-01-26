@@ -1,0 +1,5 @@
+.header__navigator {
+    align-self: center;
+    display: flex;
+    justify-content: space-between;
+}
