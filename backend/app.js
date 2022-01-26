@@ -7,7 +7,8 @@ const { login, createUser } = require('./controllers/user');
 const { auth } = require('./middlewares/auth');
 const { validateURL } = require('./helpers/validationScheme');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-var cors = require('cors');
+const cors = require('cors');
+
 
 
 
@@ -23,6 +24,11 @@ app.use(requestLogger);
 app.use(cors());
 app.options('*', cors());
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Server will crash now');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({

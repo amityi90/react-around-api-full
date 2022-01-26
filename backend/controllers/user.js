@@ -3,6 +3,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { switchErrToNum, throwErrWhenFail } = require('../helpers/errHelpers');
 
+require('dotenv').config();
+const { NODE_ENV, JWT_SECRET } = process.env;
+
+
 
 module.exports.getCurrentUser = (req, res) => {
   User.find({ _id: req.user._id })
@@ -31,7 +35,7 @@ module.exports.login = (req, res) => {
       }
       const token = jwt.sign(
         { _id: userId },
-        'some-secret-key',
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' }
       );
       console.log(token);
