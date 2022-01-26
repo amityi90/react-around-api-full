@@ -23,10 +23,8 @@ module.exports.login = (req, res) => {
       if (!user) {
         return Promise.reject(new Error('Incorrect password or email'));
       }
-      console.log('login');
 
       userId = user._id;
-      console.log(user);
       return bcrypt.compare(password, user.password);
     })
     .then((matched) => {
