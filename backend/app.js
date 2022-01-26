@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 const { PORT = 3000 } = process.env;
 const helmet = require('helmet');
 const { login, createUser } = require('./controllers/user');
@@ -16,7 +16,7 @@ const app = express();
 mongoose.connect('mongodb://localhost:27017/aroundb');
 
 const bodyParser = require('body-parser');
-const { switchErrToNum } = require('./helpers/errHelpers');
+const { handleErrors } = require('./helpers/errHelpers');
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,18 +57,9 @@ app.get('*', (req, res) => {
 
 app.use(errorLogger);
 
-app.use((err, req, res, next) => {
-  err.statusCode = switchErrToNum(err);
-  const { statusCode, message } = err;
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'An error occurred on the server'
-        : message
-    });
-  next();
-});
+app.use(errors());
+
+app.use(handleErrors);
 
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);
