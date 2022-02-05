@@ -111,7 +111,7 @@ class Api {
 }
 
 export const api = new Api({
-    baseUrl: "https://api.around-15.students.nomoreparties.sbs",
+    baseUrl: "https://www.around-15-2.students.nomoreparties.sbs",
     headers: {
         authorization: "f89c2be6-d7fd-45c3-96d0-689f19661cba",
         "Content-Type": "application/json"

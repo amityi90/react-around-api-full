@@ -24,6 +24,7 @@ class Auth {
     }
 
     signIn({ password, email }) {
+        console.log(`signin, password: ${password}, email: ${email}`);
         return fetch(`${this._baseUrl}/signin`, {
             method: "POST",
             headers: this._headers,
@@ -48,7 +49,7 @@ class Auth {
 }
 
 export const auth = new Auth({
-    baseUrl: "https://api.around-15.students.nomoreparties.sbs",
+    baseUrl: "https://www.around-15-2.students.nomoreparties.sbs",
     headers: {        
         "Content-Type": "application/json"
     }
