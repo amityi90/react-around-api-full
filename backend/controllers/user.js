@@ -32,9 +32,10 @@ module.exports.login = (req, res) => {
       if (!matched) {
         return Promise.reject(new Error('Incorrect password or email'));
       }
+      console.log(NODE_ENV);
       const token = jwt.sign(
         { _id: userId },
-        'dev-secret',
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' }
       );
       console.log(token);
@@ -68,7 +69,6 @@ module.exports.createUser = (req, res) => {
       email
     }))
     .then(user => {
-      console.log("posted");
       res.send({ message: 'Posted' });
     })
     .catch(err => next(err));
