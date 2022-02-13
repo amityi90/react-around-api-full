@@ -1,4 +1,4 @@
-module.exports.switchErrToNum = (err) => {
+const switchErrToNum = (err) => {
   switch (err.name) {
     case "CastError":
       return 404;
@@ -11,10 +11,11 @@ module.exports.switchErrToNum = (err) => {
   }
 }
 
-module.exports.throwErrWhenFail = () => {
-  const error = new Error("No card found with that id");
+module.exports.throwErrWhenFail = (err) => {
+  err = new Error("could not find");
   error.statusCode = 404;
-  throw error;
+  console.log(`-----err: ${err} -----`);
+  return err;
 }
 
 module.exports.handleErrors = (err, req, res, next) => {

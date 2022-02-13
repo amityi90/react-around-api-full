@@ -2,21 +2,18 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const { switchErrToNum, throwErrWhenFail } = require('../helpers/errHelpers');
-
 require('dotenv').config();
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 
 
-module.exports.getCurrentUser = (req, res) => {
+module.exports.getCurrentUser = (req, res, next) => {
   User.find({ _id: req.user._id })
-    .orFail(throwErrWhenFail)
     .then(user => res.send({ data: user }))
     .catch(err => next(err));
 };
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   let userId = "";
   const { email, password } = req.body;
   User.findOne({ email }).select('+password')
@@ -42,23 +39,22 @@ module.exports.login = (req, res) => {
       res.send({ token });
     })
     .then(users => res.send({ data: users }))
-    .catch(err => res.status(401).send(err));
+    .catch(err => next(err));
 };
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then(users => res.send({ data: users }))
     .catch(err => next(err));
 };
 
-module.exports.getUserById = (req, res) => {
+module.exports.getUserById = (req, res, next) => {
   User.find({ _id: req.params.id })
-    .orFail(throwErrWhenFail)
     .then(user => res.send({ data: user }))
-    .catch(err => { res.send({ massege: 'cannot find' }); });
+    .catch(err => next(err));
 };
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const { name, about, avatar, password, email } = req.body;
   bcrypt.hash(password, 10)
     .then(hash => User.create({
@@ -80,7 +76,6 @@ module.exports.updateProfile = (req, res) =>
     req.body,
     { new: true, runValidators: true },
   )
-    .orFail(throwErrWhenFail)
     .then(user => {
       res.send({ user: user });
     })
@@ -91,7 +86,6 @@ module.exports.updateAvatar = (req, res) => User.findByIdAndUpdate(
   { avatar: req.body.avatar },
   { new: true, runValidators: true },
 )
-  .orFail(throwErrWhenFail)
   .then(user => {
     res.send({ user: user });
   })
