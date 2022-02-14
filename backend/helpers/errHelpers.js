@@ -14,12 +14,11 @@ const switchErrToNum = (err) => {
 module.exports.throwErrWhenFail = (err) => {
   err = new Error("could not find");
   error.statusCode = 404;
-  console.log(`-----err: ${err} -----`);
   return err;
 }
 
 module.exports.handleErrors = (err, req, res, next) => {
-  err.statusCode = switchErrToNum(err);
+  err.statusCode = err.statusCode ? err.statusCode : switchErrToNum(err);
   const { statusCode, message } = err;
   res
     .status(statusCode)
