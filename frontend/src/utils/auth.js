@@ -12,6 +12,7 @@ class Auth {
     }
 
     signUp({ password, email }) {
+        console.log(email);
         return fetch(`${this._baseUrl}/signup`, {
             method: "POST",
             headers: this._headers,
@@ -20,7 +21,7 @@ class Auth {
                 email: email
             })
         })
-            .then(res => this._getResponseData(res));
+            .then(res => this._getResponseData(res))
     }
 
     signIn({ password, email }) {
@@ -41,16 +42,16 @@ class Auth {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization" : `Bearer ${JWT}`
-            } 
+                "Authorization": `Bearer ${JWT}`
+            }
         })
             .then(res => this._getResponseData(res));
     }
 }
 
 export const auth = new Auth({
-    baseUrl: "https://www.around-15-2.students.nomoreparties.sbs",
-    headers: {        
+    baseUrl: "https://api.around-15-2.students.nomoreparties.sbs",
+    headers: {
         "Content-Type": "application/json"
     }
 });

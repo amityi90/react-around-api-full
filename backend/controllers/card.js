@@ -15,7 +15,7 @@ module.exports.getCardById = (req, res, next) => {
 
 module.exports.deleteCardById = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .then(() => res.send({ message: 'deleted' }))
+    .then((data) => res.send({ data: data }))
     .catch(err => next(err));
 };
 
@@ -23,7 +23,7 @@ module.exports.createCard = (req, res, next) => {
   const { name, link, owner } = req.body;
   Card.create({ name, link, owner })
     .then(card => {
-      res.send({ message: 'Posted' });
+      res.send({ data: card });
     })
     .catch(err => next(err));
 };

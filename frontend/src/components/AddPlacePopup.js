@@ -30,8 +30,8 @@ function AddPlacePopup(props) {
     return (
         <PopupWithForm
             isClose={props.isClose}
-            name="change-profile-picture"
-            title="Change profile picture"
+            name="add-place"
+            title="Add place"
             submit="Save"
             onClose={props.onClose}
             onSubmit={handleSubmit}

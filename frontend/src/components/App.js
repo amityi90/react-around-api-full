@@ -50,6 +50,7 @@ function App() {
         setUserEmail(res.data.email);
         setLoggedIn(true);
         api.addToken(localStorage.getItem('JWT'));
+        console.log(api._headers);
         navigate("/", { replace: true });
       })
       .catch((err) => {
@@ -112,10 +113,13 @@ function App() {
   }
 
   function handleAddPlaceSubmit(card) {
+    console.log(currentUser);
+    card.owner = currentUser;
+    console.log(card);
     api.postCard(card)
       .then((res) => {
-        card.ownerId = res.owner._id;
-        card.cardId = res._id;
+        console.log(res);
+        card.ownerId = card.owner._id;
         card.likesArray = [];
         setCards([card, ...cards]);
         handleClickClose();
@@ -123,15 +127,18 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-
   }
 
   function handleCardLike(card) {
 
-    const isLiked = card.likesArray.some(like => like._id === currentUser.userId);
+    console.log(card.likesArray);
+
+    const isLiked = card.likesArray.includes(currentUser.userId);
 
     api.changeLikeCardStatus(card.cardId, isLiked)
       .then((res) => {
+        console.log(res);
+        console.log(card.cardId);
         setCards(cards.map((resCard) => {
           if (resCard.cardId === card.cardId) {
             resCard.likesArray = res.likes;
@@ -157,7 +164,8 @@ function App() {
       api.getInitialCards()
         .then((result) => {
           const initialCards = [];
-          result.forEach(card => {
+          console.log(result);
+          result.data.forEach(card => {
             initialCards.push({
               name: card.name,
               link: card.link,
@@ -180,13 +188,14 @@ function App() {
     () => {
       api.getUserInfo()
         .then((result) => {
-
+          console.log(result);
+          setUserEmail(result.data[0].email);
           setCurrentUser({
             ...currentUser,
-            userName: result.name,
-            userDescription: result.about,
-            userAvatar: result.avatar,
-            userId: result._id
+            userName: result.data[0].name,
+            userDescription: result.data[0].about,
+            userAvatar: result.data[0].avatar,
+            userId: result.data[0]._id
           });
         })
         .catch((err) => {

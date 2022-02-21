@@ -15,8 +15,9 @@ class Api {
     addToken(token) {
         this._headers = {
             ...this._headers,
-            "Authorization" : `Bearer ${token}`
+            "Authorization": `Bearer ${token}`
         }
+        console.log(this._headers);
     }
 
     _getResponseData(res) {
@@ -41,12 +42,14 @@ class Api {
     }
 
     postCard(card) {
+        console.log(card);
         return fetch(`${this._baseUrl}/cards`, {
             method: "POST",
             headers: this._headers,
             body: JSON.stringify({
                 name: card.name,
-                link: card.link
+                link: card.link,
+                owner: card.owner
             })
         })
             .then(res => this._getResponseData(res));
@@ -61,7 +64,7 @@ class Api {
     }
 
     makeLike(cardId) {
-        return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+        return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
             method: "PUT",
             headers: this._headers
         })
@@ -69,7 +72,7 @@ class Api {
     }
 
     makeUnlike(cardId) {
-        return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+        return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
             method: "DELETE",
             headers: this._headers
         })
@@ -111,9 +114,8 @@ class Api {
 }
 
 export const api = new Api({
-    baseUrl: "https://www.around-15-2.students.nomoreparties.sbs",
+    baseUrl: "https://api.around-15-2.students.nomoreparties.sbs",
     headers: {
-        authorization: "f89c2be6-d7fd-45c3-96d0-689f19661cba",
         "Content-Type": "application/json"
     }
 });
