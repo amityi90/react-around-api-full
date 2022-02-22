@@ -17,7 +17,6 @@ class Api {
             ...this._headers,
             "Authorization": `Bearer ${token}`
         }
-        console.log(this._headers);
     }
 
     _getResponseData(res) {

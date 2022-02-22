@@ -37,20 +37,25 @@ function App() {
     setLoggedIn(false);
     setUserEmail("");
     navigate("/signin", { replace: true });
-
   }
 
   function handleCheckToken() {
-    auth.checkToken(localStorage.getItem('JWT'))
+    return auth.checkToken(localStorage.getItem('JWT'))
       .then((res) => {
         if (!res.data) {
           navigate("/signin", { replace: true });
           return Promise.reject(new Error('cannot find'))
         }
-        setUserEmail(res.data.email);
-        setLoggedIn(true);
         api.addToken(localStorage.getItem('JWT'));
-        console.log(api._headers);
+        setCurrentUser({
+          ...currentUser,
+          userName: res.data[0].name,
+          userDescription: res.data[0].about,
+          userAvatar: res.data[0].avatar,
+          userId: res.data[0]._id
+        });
+        setUserEmail(res.data[0].email);
+        setLoggedIn(true);
         navigate("/", { replace: true });
       })
       .catch((err) => {
@@ -66,6 +71,7 @@ function App() {
         }
         setUserEmail(register.email);
         localStorage.setItem('JWT', res.token);
+        handleCheckToken();
         setLoggedIn(true);
         api.addToken(res.token);
         navigate("/", { replace: true });
@@ -78,7 +84,7 @@ function App() {
   function handleRegistration(register) {
     return auth.signUp(register)
       .then((res) => {
-        if (!res.data) {
+        if (!res) {
           setRegInfoController({
             popup: true,
             img: false,
@@ -119,6 +125,8 @@ function App() {
     api.postCard(card)
       .then((res) => {
         console.log(res);
+        console.log(currentUser.userId);
+        card.cardId = res.data._id;
         card.ownerId = card.owner._id;
         card.likesArray = [];
         setCards([card, ...cards]);
@@ -131,17 +139,14 @@ function App() {
 
   function handleCardLike(card) {
 
-    console.log(card.likesArray);
 
     const isLiked = card.likesArray.includes(currentUser.userId);
 
     api.changeLikeCardStatus(card.cardId, isLiked)
       .then((res) => {
-        console.log(res);
-        console.log(card.cardId);
         setCards(cards.map((resCard) => {
           if (resCard.cardId === card.cardId) {
-            resCard.likesArray = res.likes;
+            resCard.likesArray = res.card.likes;
           }
           return resCard
         }));
@@ -154,56 +159,64 @@ function App() {
   React.useEffect(
     () => {
       handleCheckToken();
-      console.log(api._headers);
     },
     []
   );
 
   React.useEffect(
     () => {
-      api.getInitialCards()
-        .then((result) => {
-          const initialCards = [];
-          console.log(result);
-          result.data.forEach(card => {
-            initialCards.push({
-              name: card.name,
-              link: card.link,
-              likesArray: card.likes,
-              ownerId: card.owner._id,
-              cardId: card._id
+      handleCheckToken()
+        .then(() => {
+          api.getUserInfo()
+            .then((result) => {
+              setUserEmail(result.data[0].email);
+              setCurrentUser({
+                ...currentUser,
+                userName: result.data[0].name,
+                userDescription: result.data[0].about,
+                userAvatar: result.data[0].avatar,
+                userId: result.data[0]._id
+              });
+            })
+            .catch((err) => {
+              console.log(err);
             });
-          });
-          setCards(initialCards);
-        })
-        .catch((err) => {
-          console.log(err);
         });
     },
     []
   );
-
 
   React.useEffect(
     () => {
-      api.getUserInfo()
-        .then((result) => {
-          console.log(result);
-          setUserEmail(result.data[0].email);
-          setCurrentUser({
-            ...currentUser,
-            userName: result.data[0].name,
-            userDescription: result.data[0].about,
-            userAvatar: result.data[0].avatar,
-            userId: result.data[0]._id
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+      handleCheckToken()
+        .then(() => {
+          api.getInitialCards()
+            .then((result) => {
+              const initialCards = [];
+              result.data.forEach(card => {
+                if (card.owner) {
+                  initialCards.push({
+                    name: card.name,
+                    link: card.link,
+                    likesArray: card.likes,
+                    ownerId: card.owner.userId,
+                    cardId: card._id
+                  });
+                }
+              });
+              initialCards.reverse();
+              setCards(initialCards);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         });
     },
     []
   );
+
+
+
 
   React.useEffect(() => {
     const closeByEscape = (e) => {
@@ -263,8 +276,8 @@ function App() {
         handleClickClose();
         setCurrentUser({
           ...currentUser,
-          userName: res.name,
-          userDescription: res.about
+          userName: userInfo.name,
+          userDescription: userInfo.profession
         });
       })
       .catch((err) => {

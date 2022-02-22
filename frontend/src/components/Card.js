@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Card(props) {
 
+
+
     const currentUser = React.useContext(CurrentUserContext);
-    const isOwn = props.card.ownerId === currentUser.userId;
-    console.log(`----${currentUser.userId}---`);
-    console.log(`----${isOwn}---`);
+    const [isOwn, setIsOwn] = React.useState(props.card.ownerId === currentUser.userId); 
     const isLiked = currentUser.userId ? (props.card.likesArray.includes(currentUser.userId) ? true : false) : false;
+
+    React.useEffect(
+        () => {
+            setIsOwn(props.card.ownerId === currentUser.userId);
+        },
+        []
+    );
 
 
     function handleClick() {
