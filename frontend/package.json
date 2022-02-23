@@ -18,7 +18,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "npm run build && scp -r ./build/* amityi90@around-15.students.nomoreparties.sbs:/home/amityi90/react-around-api-full/frontend"
   },
   "eslintConfig": {
     "extends": [
@@ -38,7 +38,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://amityi90.github.io/around-react",
+  "homepage": ".",
   "devDependencies": {
     "gh-pages": "^3.2.3"
   }
