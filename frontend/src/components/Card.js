@@ -6,15 +6,8 @@ function Card(props) {
 
 
     const currentUser = React.useContext(CurrentUserContext);
-    const [isOwn, setIsOwn] = React.useState(props.card.ownerId === currentUser.userId); 
     const isLiked = currentUser.userId ? (props.card.likesArray.includes(currentUser.userId) ? true : false) : false;
 
-    React.useEffect(
-        () => {
-            setIsOwn(props.card.ownerId === currentUser.userId);
-        },
-        []
-    );
 
 
     function handleClick() {
@@ -32,7 +25,7 @@ function Card(props) {
 
     return (
         <article className="card" >
-            {isOwn && <button className="card__delete" type="button" aria-label="delete" onClick={handleDeleteClick} />}
+            {(props.card.ownerId === currentUser.userId) && <button className="card__delete" type="button" aria-label="delete" onClick={handleDeleteClick} />}
             <div className="card__image-container">
                 <img className="card__image" src={props.card.link} alt={`photo of ${props.card.name}`} onClick={handleClick} />
             </div>

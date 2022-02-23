@@ -124,10 +124,8 @@ function App() {
     console.log(card);
     api.postCard(card)
       .then((res) => {
-        console.log(res);
-        console.log(currentUser.userId);
         card.cardId = res.data._id;
-        card.ownerId = card.owner._id;
+        card.ownerId = card.owner.userId;
         card.likesArray = [];
         setCards([card, ...cards]);
         handleClickClose();
