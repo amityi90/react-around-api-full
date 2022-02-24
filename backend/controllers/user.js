@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const {throwAuthErr} = require('../helpers/errHelpers');
+const { throwAuthErr } = require('../helpers/errHelpers');
 
 require('dotenv').config();
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -67,9 +67,13 @@ module.exports.createUser = (req, res, next) => {
       avatar,
       password: hash,
       email
-    }))
+    })
+      .catch((err) => {
+          err.statusCode = 409;
+          throw err;
+      }))
     .then(user => {
-      res.send({ message: 'Posted' });
+      res.send({ data: user });
     })
     .catch(err => next(err));
 };

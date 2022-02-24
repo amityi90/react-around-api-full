@@ -6,9 +6,9 @@ module.exports.auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return res
-      .status(403)
-      .send({ message: 'Authorization Required' });
+    const err = new Error('Authorization Required');
+    err.statusCode = 403;
+    throw err;
   }
 
   const token = authorization.replace('Bearer ', '');
@@ -17,11 +17,10 @@ module.exports.auth = (req, res, next) => {
   try {
     payload = jwt.verify(token,
       NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'
-       );
+    );
   } catch (err) {
-    return res
-      .status(403)
-      .send({ message: 'Authorization Required' });
+    err.statusCode = 403;
+    throw err;
   }
 
   req.user = payload;

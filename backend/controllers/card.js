@@ -7,16 +7,25 @@ module.exports.getCards = (req, res, next) => {
 };
 
 module.exports.getCardById = (req, res, next) => {
-
   Card.find({ _id: req.params.id })
     .then(card => res.send({ data: card }))
     .catch(err => next(err));
 };
 
 module.exports.deleteCardById = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
-    .then((data) => res.send({ data: data }))
-    .catch(err => next(err));
+  Card.find({ _id: req.params.cardId })
+    .then(card => {
+      if (req.user._id === card[0].owner.userId) {
+        Card.findByIdAndRemove(req.params.cardId)
+          .then((data) => res.send({ data: data }))
+          .catch(err => next(err));
+      } else {
+        const err = new Error('Forbidden');
+        err.statusCode = 403;
+        throw err;
+      }
+    })
+    .catch((err) => next(err));
 };
 
 module.exports.createCard = (req, res, next) => {
