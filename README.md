@@ -1,7 +1,30 @@
-# react-around-api-full 
-The API of "Around the U.S." with authorization and registration handled by the back-end server.
+# Around the U.S.
 
-This repository contains the full API of "Around the U.S." project that features user authorization and user registration and handles cards and users.
-* a link to repository: https://github.com/amityi90/react-around-api-full.git
-*  the server's domain name: api.around-15.students.nomoreparties.sbs
-*  link to the website: https://amityi90.github.io/frontend-15/
+**Description**
+Here you can share photos from all around the Web.
+
+![around-screen](https://user-images.githubusercontent.com/58591435/172022562-6d0383c4-c8c9-42b3-9759-656a7fd0d9f1.png)
+
+**Technologies**
+i have useud:
+BEM methodology
+adapting to defferent devices
+form
+javaScript
+DOM
+oop
+webpack
+React
+React router
+Node.js
+Express.js
+
+**How To Run**
+run the command: "npm start" in the frontend directory.
+
+**How to Use**
+after registering edit your profile and add photos by name and URL.
+
+
+**Link**
+https://amityi90.github.io/react-around-api-full/
